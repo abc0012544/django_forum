@@ -1,0 +1,52 @@
+<!--模板化 自动生成重复的内容  -->
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>论坛首页</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-12">
+        <div class="jumbotron">
+            <center><h1>python论坛部落</h1></center>
+        </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-xs-12 col-md-10">
+           {% for b in blocks %}
+            <div class="panel panel-default">
+            <div class="panel-heading">
+            <a href="#" style="font-size: 18px" class="text-primary">{{ b.name }}</a>
+            <span class="pull-right">{{ b.manager_name }}<span>
+        </div>
+        <div class="panel-body">
+            {{ b.desc }}
+        </div>
+        </div>
+        {% endfor %}
+        </div>
+
+        <div class="col-xs-12 col-md-2">
+            <div class="well">个人中心</div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+
+
+
+</html>
