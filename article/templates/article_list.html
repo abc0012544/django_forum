@@ -30,8 +30,8 @@
             <tr>
                 <td>{{ article.title }}</td>
                 <td>{{ article.content }}</td>
-                <td>{{ article.create_timestamp|date:"Y-m-d P" }}</td>
-                <td>{{ article.last_update_timestamp|date:"Y-m-d P"}}</td>
+                <td>{{ article.create_timestamp|date:"Y-m-d H:i:s" }}</td>
+                <td>{{ article.last_update_timestamp|date:"Y-m-d H:i:s"}}</td>
             </tr>
         {% endfor %}
         </tbody>

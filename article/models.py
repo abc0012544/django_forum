@@ -1,5 +1,6 @@
 from django.db import models
 from block.models import Block
+import django.utils.timezone as timezone
 
 class Article(models.Model):
     block=models.ForeignKey(Block,verbose_name="版块ID")
