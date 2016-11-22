@@ -15,7 +15,7 @@ Including another URLconf
 """
 
 import django
-from django.conf.urls import url
+from django.conf.urls import url,include
 from django.contrib import admin
 import view
 
@@ -25,4 +25,6 @@ urlpatterns = [
     url(r'^$', view.index),
     url(r'^fb', view.fb),
     url(r'^home',view.home),
+    url(r'^article/',include('article.urls'))
+#     /article/...any...这类访问路径由子菜单article.urls来处理/article/后面的部分
 ]

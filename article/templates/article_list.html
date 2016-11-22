@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+<div class="col-xs-12 col-md-12" xmlns="http://www.w3.org/1999/html">
+<div class="panel panel-default">
+    <div class="panel-heading">
+    <ol class="breadcrumb">
+        <li><a href="/">首页</a></li>
+        <li class="active">{{ b.name }}</li>
+    </div>
+</div>
+    <a href="#" class="btn btn-primary">发表文章</a>
+    </br>
+    </br>
+
+<div class="row">
+<div class="col-xs-12 col-md-12" xmlns="http://www.w3.org/1999/html">
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>标题</th>
+                <th>内容</th>
+                <th>创建时间</th>
+                <th>最后更新时间</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td>{{ article.title }}</td>
+                <td>{{ article.content }}</td>
+                <td>{{ article.create_timestamp|date:"Y-m-d P" }}</td>
+                <td>{{ article.last_update_timestamp|date:"Y-m-d P"}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+ </div>
+
+{% endblock %}

@@ -13,19 +13,20 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-md-12">
-        <div class="jumbotron">
-            <center><h1>python论坛部落</h1></center>
-        </div>
+            <div class="jumbotron">
+                <center><h1>python论坛部落</h1></center>
+            </div>
         </div>
     </div>
 
     <div class="row">
 
         <div class="col-xs-12 col-md-10">
+        <!--变量一定不要叫block，跟模板关键字重名了-->
            {% for b in blocks %}
             <div class="panel panel-default">
             <div class="panel-heading">
-            <a href="#" style="font-size: 18px" class="text-primary">{{ b.name }}</a>
+            <a href="/article/list/{{ b.id }}" style="font-size: 18px" class="text-primary">{{ b.name }}</a>
             <span class="pull-right">{{ b.manager_name }}<span>
         </div>
         <div class="panel-body">
