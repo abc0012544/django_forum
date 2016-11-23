@@ -22,14 +22,14 @@
   <div class="form-group">
 
     <div class="col-xs-12 col-md-1"><label for="title"  control-label">标题</label></div>
-    <div class="col-xs-12 col-md-11"><input type="text" class="form-control"  id="title" name="title" value="{{ title }}" placeholder="请输入标题">
+    <div class="col-xs-12 col-md-11"><input type="text" class="form-control"  id="title" name="title" value="{{ form.title.value }}" placeholder="请输入标题">
     </div>
   </div>
 
   <div class="form-group">
     <div class="col-xs-12 col-md-1"><label for="content">内容</label></div>
     <div class="col-xs-12 col-md-11">
-      <textarea class="form-control" rows="8" name="content"  placeholder="请输入内容">{{ content }}</textarea>
+      <textarea class="form-control" rows="8" name="content"  placeholder="请输入内容">{{ form.content.value }}</textarea>
     </div>
   </div>
   <br>
@@ -40,8 +40,12 @@
     </div>
 </form>
  </div>
-{% if error %}
-<div class="alert alert-danger">{{ error }}</div>
+{% for field in form %}
+{% if field.errors %}
+    {% for error in field.errors %}
+        <div class="alert alert-danger">{{ field.label }}:{{ error }}</div>
+    {% endfor %}
 {% endif %}
+{% endfor %}
 </div>
 {% endblock %}

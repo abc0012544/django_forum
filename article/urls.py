@@ -1,4 +1,4 @@
-from django.conf.urls import  url
+from django.conf.urls import url
 from .views import *
 
 '''
@@ -8,5 +8,7 @@ from .views import *
 urlpatterns=[
     url(r'^list/(?P<block_id>\d+)$',article_list),
     #url(r'^create/(?P<blockid>)$',article_content),
-    url(r'^create',article_content),
+    url(r'^create',article_create.as_view()),
+    url(r'^(?P<block_id>\d+)/(?P<article_id>\d+)/detail',detail),
+    #url(r'^(?P<pk>\d+)/detail',Article_detail.as_view()),
 ]

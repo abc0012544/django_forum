@@ -1,6 +1,10 @@
 from django.shortcuts import render,redirect
 from block.models import Block
 from .models import Article
+from  .forms import AricleForm
+from django.views.generic import View
+from django.views.generic import DetailView
+
 blockid2=[]
 
 def article_list(request,block_id):
@@ -37,15 +41,69 @@ def article_content(request):
         return render(request, "article_content.html", {"article": article_objs, "b": block})
 
     else:
-        title = request.POST["title"].strip()
-        content = request.POST["content"].strip()
-        if not title or not content:
-            return render(request, "article_content.html", {"article": article_objs, "b": block,"error":"标题或者内容不能为空"})
-        if len(content)>10000 or len(title)>100:
-            return render(request, "article_content.html", {"article": article_objs, "b": block,"error":"标题或者内容过长！",
-                                                            "title":title,"content":content})
-        article=Article(block=block,title=title,content=content,status=0)
-        article.save()
-        return  redirect("/article/list/%d" %blockid)
+        # title = request.POST["title"].strip()
+        # content = request.POST["content"].strip()
 
+        # if not title or not content:
+        #     return render(request, "article_content.html", {"article": article_objs, "b": block,"error":"标题或者内容不能为空"})
+        # if len(content)>10000 or len(title)>100:
+        #     return render(request, "article_content.html", {"article": article_objs, "b": block,"error":"标题或者内容过长！",
+        #                                                     "title":title,"content":content})
+        # article=Article(block=block,title=title,content=content,status=0)
+        # article.save()
+        # return  redirect("/article/list/%d" %blockid)
+        # 冗余写法，下面是更好的写法
+        form=AricleForm(request.POST)
+        if form.is_valid():
+            article=form.save(commit=False)
+            article.block=block
+            article.status=0
+            article.save()
+            return  redirect("/article/list/%d" %blockid)
+        else:
+            return render(request, "article_content.html", {"article": article_objs, "b": block, "form": form})
+
+class article_create(View):
+    def init_data(self,request):
+        if len(blockid2):
+            self.blockid = blockid2[0]
+            print("打印1" ,self.blockid)
+        else:
+            bt = Block.objects.filter(status=0)[:1]
+            if bt:
+                self.blockid = bt[0].id
+                print("打印2", self.blockid)
+            else:
+                return render(request, "index.html")
+        self.block = Block.objects.get(id=self.blockid)
+        self.article_objs=Article.objects.filter(block__id=self.blockid, status=0).order_by("-id")
+
+    def get(self,request):
+        self.init_data(request)
+        return render(request, "article_content.html", {"article": self.article_objs, "b": self.block})
+
+    def post(self,request):
+        self.init_data(request)
+        form = AricleForm(request.POST)
+        if form.is_valid():
+            article = form.save(commit=False)
+            article.block = self.block
+            article.status = 0
+            article.save()
+            return redirect("/article/list/%d" % self.blockid)
+        else:
+            return render(request, "article_content.html", {"article": self.article_objs, "b": self.block, "form": form})
+
+def detail(request,block_id,article_id):
+    article_id=int(article_id)
+    block_id = int(block_id)
+    article=Article.objects.get(id=article_id)
+    block = Block.objects.get(id=block_id)
+    #article_objs=Article.objects.filter(block=block,status=0).order_by("-id")
+    return render(request, "article_detail.html",{"b":block,"a":article})
+
+class Article_detail(DetailView):
+    model = Article
+    template_name ="article_detail.html"
+    context_object_name = "a"
 
