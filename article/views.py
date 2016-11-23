@@ -9,3 +9,8 @@ def article_list(request,block_id):
     return render(request,"article_list.html",{"articles":article_objs,"b":block})
 
 
+def article_content(request,blockid):
+    blockid=int(blockid)
+    block=Block.objects.get(id=blockid)
+    article_objs=Article.objects.filter(block__id=blockid,status=0).order_by("-id")
+    return render(request,"article_content.html",{"article":article_objs,"b":block})
