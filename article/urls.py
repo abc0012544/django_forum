@@ -7,5 +7,6 @@ from .views import *
 '''
 urlpatterns=[
     url(r'^list/(?P<block_id>\d+)$',article_list),
-    url(r'^list/(?P<blockid>\d+)/content$',article_content),
+    #url(r'^create/(?P<blockid>)$',article_content),
+    url(r'^create',article_content),
 ]

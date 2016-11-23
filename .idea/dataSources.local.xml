@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="Sqlite (Xerial) - db.sqlite3" uuid="84c5e838-25be-4e0c-a2d1-1bd6db34fde2">
+      <secret-storage>master_key</secret-storage>
+      <auth-required>false</auth-required>
+      <first-sync>true</first-sync>
+      <ssh-properties>
+        <enabled>true</enabled>
+        <secret-storage>master_key</secret-storage>
+        <use-password>true</use-password>
+      </ssh-properties>
+    </data-source>
+  </component>
+</project>
