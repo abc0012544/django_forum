@@ -47,20 +47,25 @@
 
 <ul class="pagination">
     {% if laquo == 1 %}
+        <li><a href="?page_no=1">首页</a></li>
         <li><a href="?page_no={{ previous_link }}">&laquo;</a></li>
     {% endif %}
 
     {% for i in page_links %}
-        <li><a href="?page_no={{ i }}">{{ i }}</a></li>
+        {% if i == page_no %}
+        <li class="active"><a href="?page_no={{ i }}">{{ i }}</a></li>
+        {% else %}
+         <li><a href="?page_no={{ i }}">{{ i }}</a></li>
+        {% endif %}
     {% endfor %}
 
     {% if raquo == 1 %}
         <li><a href="?page_no={{ next_link }}">&raquo;</a></li>
+        <li><a href="?page_no={{p.num_pages}}">尾页</a></li>
     {% endif %}
 
 
-{#        <li><a href="#">&raquo;</a></li>#}
-{#        <li><a href="#">&laquo;</a></li>#}
+
 
 </ul>
 </nav>

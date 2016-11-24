@@ -7,15 +7,22 @@ from django.views.generic import DetailView
 from django.core.paginator import Paginator
 
 blockid2=[]
-page_links=[]
-raquo=0
-laquo=0
-previous_link=0
-next_link=0
+
+
 
 def article_list(request,block_id):
-    ARTICLE_CNT_1PAGE=6
+    global raquo
+    global laquo
+    global previous_link
+    global next_link
+    global page_links
+    global p
+    raquo = 0
+    laquo=0
+    previous_link=0
+    next_link=0
     page_links=[]
+    ARTICLE_CNT_1PAGE=6
     page_no=int(request.GET.get("page_no","1"))
     block_id=int(block_id)
     if len(blockid2):
@@ -50,7 +57,7 @@ def article_list(request,block_id):
     print("raquo",raquo)
     print("laquo",laquo)
     print("next_link",next_link)
-    # print("previous_link",previous_link)
+    print("previous_link",previous_link)
     article_objs=page.object_list
     return render(request,"article_list.html",{"articles":article_objs,"b":block,"p":p,"page_links":page_links,"page_no":page_no,
                                                "raquo":raquo,"laquo":laquo,"previous_link":previous_link,"next_link":next_link})
