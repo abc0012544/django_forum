@@ -43,6 +43,25 @@
 
  </div>
 </div>
+<nav>
+
+<ul class="pagination">
+    {% if laquo == 1 %}
+        <li><a href="?page_no={{ previous_link }}">&laquo;</a></li>
+    {% endif %}
+
+    {% for i in page_links %}
+        <li><a href="?page_no={{ i }}">{{ i }}</a></li>
+    {% endfor %}
+
+    {% if raquo == 1 %}
+        <li><a href="?page_no={{ next_link }}">&raquo;</a></li>
+    {% endif %}
 
 
+{#        <li><a href="#">&raquo;</a></li>#}
+{#        <li><a href="#">&laquo;</a></li>#}
+
+</ul>
+</nav>
 {% endblock %}
