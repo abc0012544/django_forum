@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+
 from block.models import Block
+
 
 def index(request):
     block_infos=Block.objects.filter(status=0).order_by("-id")
@@ -15,3 +17,6 @@ def fb(request):
 
 def home(request):
     return HttpResponse("home")
+
+
+

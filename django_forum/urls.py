@@ -19,12 +19,17 @@ from django.conf.urls import url,include
 from django.contrib import admin
 import view
 
+
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'^static/(?p<path>.*)s',django.contrib.staticfiles.views.serve),            #定义这样的路径调用自定类按照静态文件处理
     url(r'^$', view.index),
     url(r'^fb', view.fb),
     url(r'^home',view.home),
-    url(r'^article/',include('article.urls'))
-#     /article/...any...这类访问路径由子菜单article.urls来处理/article/后面的部分
+    url(r'^article/',include('article.urls')),
+    url(r'^register',include('user.urls')),
+    url(r'^accounts/',include('django.contrib.auth.urls')),
+
+
 ]

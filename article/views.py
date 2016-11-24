@@ -51,13 +51,7 @@ def article_list(request,block_id):
         previous_link=page_links[0]-1
     else:
         laquo=0
-    print("page_links", page_links)
-    print("p.num_pages",p.num_pages)
-    print("page_links[-1]",page_links[-1])
-    print("raquo",raquo)
-    print("laquo",laquo)
-    print("next_link",next_link)
-    print("previous_link",previous_link)
+# 上面是计算最大页，最小页逻辑，如果符合，标示为1，并且记录最大页，最小页数值
     article_objs=page.object_list
     return render(request,"article_list.html",{"articles":article_objs,"b":block,"p":p,"page_links":page_links,"page_no":page_no,
                                                "raquo":raquo,"laquo":laquo,"previous_link":previous_link,"next_link":next_link})
@@ -98,6 +92,7 @@ def article_content(request):
         if form.is_valid():
             article=form.save(commit=False)
             article.block=block
+            article.owner="admin"
             article.status=0
             article.save()
             return  redirect("/article/list/%d" %blockid)

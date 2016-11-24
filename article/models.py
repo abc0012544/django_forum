@@ -1,9 +1,11 @@
 from django.db import models
 from block.models import Block
 import django.utils.timezone as timezone
+from django.contrib.auth.models import User
 
 class Article(models.Model):
     block=models.ForeignKey(Block,verbose_name="版块ID")
+    owner=models.ForeignKey(User,verbose_name="作者")
     title= models.CharField("标题", max_length=100)
     content= models.CharField("内容",max_length=10000)
     status=models.IntegerField("状态",choices=((0,"正常"),(-1,"删除")),default=0)
