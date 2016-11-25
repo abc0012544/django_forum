@@ -25,29 +25,31 @@ def register(request):
         form=AricleForm(request.POST)
 
         if form.is_valid():
-            reg=form.save(commit=False)
-            reg.save()
+            # reg=form.save(commit=False)
+            # reg.save()
             pk=auth()
-            user=request.POST['username']
-            u=User.objects.get(username=user)
-            u.is_active=False
-            u.save()
-            print("pk=%s user=%s" %(pk,user))
-            user=User.objects.get(username=user)
+            u=request.POST['username']
+            pw=request.POST['password']
+            email=request.POST['email']
+            user=User.objects.create_user(u,email,pw)
+            user.is_active=False
+            user.save()
+            print("pk=%s user=%s" %(pw,u))
+            # user=User.objects.get(username=user)
             active=Active(user=user,auth=pk)
             active.save()
-            print('request.get_host()',request.get_host())
+            # print('request.get_host()',request.get_host())
             text="http://%s/register/active/%s" %(request.get_host() ,pk)
             #text = "http://127.0.0.1/register/active/%s" % pk
-            print("text",text)
-            #sendemail(w)
+            # print("text",text)
+            sendemail(text,email)
             return  HttpResponse(text)
         else:
             return render(request, "register.html", {"form": form})
 
-def sendemail(text):
+def sendemail(text,receiver):
     sender = 'hehao@szzbmy.com'
-    receiver = 'hehao@szzbmy.com'
+    receiver = receiver
     subject = '激活码验证'
     smtpserver = 'smtp.ym.163.com'
     username = 'hehao@szzbmy.com'

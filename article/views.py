@@ -5,25 +5,50 @@ from  .forms import AricleForm
 from django.views.generic import View
 from django.views.generic import DetailView
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 blockid2=[]
 
-
-
-def article_list(request,block_id):
+def fenye(request,article_all):
     global raquo
     global laquo
     global previous_link
     global next_link
     global page_links
+    global page_no
     global p
+    global article_objs
     raquo = 0
-    laquo=0
-    previous_link=0
-    next_link=0
-    page_links=[]
-    ARTICLE_CNT_1PAGE=6
-    page_no=int(request.GET.get("page_no","1"))
+    laquo = 0
+    previous_link = 0
+    next_link = 0
+    page_links = []
+    ARTICLE_CNT_1PAGE = 6
+    page_no = int(request.GET.get("page_no", "1"))
+    p = Paginator(article_all, ARTICLE_CNT_1PAGE)
+    page = p.page(page_no)
+    for i in range(page_no - 3, page_no + 4):
+        if i > 0 and i <= p.num_pages:
+            page_links.append(i)
+
+    if page_links[-1] + 1 <= p.num_pages:
+        raquo = 1
+        next_link = page_links[-1] + 1
+    else:
+        raquo = 0
+    if page_links[0] - 1 > 0:
+        laquo = 1
+        previous_link = page_links[0] - 1
+    else:
+        laquo = 0
+        # 上面是计算最大页，最小页逻辑，如果符合，标示为1，并且记录最大页，最小页数值
+    article_objs = page.object_list
+
+    return raquo,laquo,previous_link,next_link,p,article_objs,page_links
+
+def article_list(request,block_id):
+
     block_id=int(block_id)
     if len(blockid2):
         # blockid2.pop()
@@ -35,24 +60,8 @@ def article_list(request,block_id):
         # 就保存了当前id，在当前页点击发布文章按钮进入article_content.html，就可以带进当前id值
     block=Block.objects.get(id=block_id)
     article_all=Article.objects.filter(block=block,status=0).order_by("-id")
-    p=Paginator(article_all,ARTICLE_CNT_1PAGE)
-    page=p.page(page_no)
-    for i in range(page_no - 3, page_no + 4):
-        if i > 0 and i <= p.num_pages:
-            page_links.append(i)
-
-    if page_links[-1] + 1 <= p.num_pages:
-        raquo=1
-        next_link=page_links[-1] + 1
-    else:
-        raquo=0
-    if page_links[0]-1 >0:
-        laquo=1
-        previous_link=page_links[0]-1
-    else:
-        laquo=0
-# 上面是计算最大页，最小页逻辑，如果符合，标示为1，并且记录最大页，最小页数值
-    article_objs=page.object_list
+#
+    fenye(request, article_all)
     return render(request,"article_list.html",{"articles":article_objs,"b":block,"p":p,"page_links":page_links,"page_no":page_no,
                                                "raquo":raquo,"laquo":laquo,"previous_link":previous_link,"next_link":next_link})
 
@@ -113,6 +122,8 @@ class article_create(View):
                 return render(request, "index.html")
         self.block = Block.objects.get(id=self.blockid)
         self.article_objs=Article.objects.filter(block__id=self.blockid, status=0).order_by("-id")
+        self.name=request.user
+        self.owner=User.objects.get(username=self.name)
 
     def get(self,request):
         self.init_data(request)
@@ -123,7 +134,8 @@ class article_create(View):
         form = AricleForm(request.POST)
         if form.is_valid():
             article = form.save(commit=False)
-            article.block = self.block
+            article.owner = self.owner
+            article.block=self.block
             article.status = 0
             article.save()
             return redirect("/article/list/%d" % self.blockid)
@@ -133,10 +145,12 @@ class article_create(View):
 def detail(request,block_id,article_id):
     article_id=int(article_id)
     block_id = int(block_id)
+    name=request.user
     article=Article.objects.get(id=article_id)
     block = Block.objects.get(id=block_id)
+    name=article.owner
     #article_objs=Article.objects.filter(block=block,status=0).order_by("-id")
-    return render(request, "article_detail.html",{"b":block,"a":article})
+    return render(request, "article_detail.html",{"b":block,"a":article,"name":name})
 
 class Article_detail(DetailView):
     model = Article

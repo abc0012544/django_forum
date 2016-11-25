@@ -21,6 +21,7 @@ import view
 
 
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'^static/(?p<path>.*)s',django.contrib.staticfiles.views.serve),            #定义这样的路径调用自定类按照静态文件处理
@@ -28,8 +29,10 @@ urlpatterns = [
     url(r'^fb', view.fb),
     url(r'^home',view.home),
     url(r'^article/',include('article.urls')),
-    url(r'^register',include('user.urls')),
+    url(r'^register/',include('user.urls')),
     url(r'^accounts/',include('django.contrib.auth.urls')),
+    # url(r'^accounts/login/$',  login, {'template_name': 'registration/login.html'}),   # 指定登录页面模板
+    # url(r'^accounts/logout/$', logout_then_login),
 
 
 ]

@@ -21,7 +21,7 @@
 <form action="/article/create/{{ b.id }}" method="POST" class="form-horizontal" role="form">{% csrf_token %}
   <div class="form-group">
 
-    <div class="col-xs-12 col-md-1"><label for="title"  control-label">标题</label></div>
+    <div class="col-xs-12 col-md-1"><label for="title"  control-label>标题</label></div>
     <div class="col-xs-12 col-md-11"><input type="text" class="form-control"  id="title" name="title" value="{{ form.title.value }}" placeholder="请输入标题">
     </div>
   </div>

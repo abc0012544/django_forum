@@ -2,6 +2,12 @@
 
 {% extends "base.html" %}
 {% block content %}
+    {% if user.is_authenticated %}
+        <p>{{ user.username }}欢迎来到论坛
+        <a href="/accounts/logout/">登出</a></p>
+    {% else %}
+        <p>匿名用户请<a href="/accounts/login/">登录</a></p>
+    {% endif %}
     <div class="col-xs-12 col-md-10">
         <!--变量一定不要叫block，跟模板关键字重名了-->
         {% for b in blocks %}
