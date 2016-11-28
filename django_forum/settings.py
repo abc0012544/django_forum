@@ -132,3 +132,15 @@ APPEND_SLASH=False
 
 LOGIN_REDIRECT_URL="/"
 LOGIN_URL="/"
+
+#  ---------------------------------------------------------
+#  Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = False
+EMAIL_HOST = 'smtp.ym.163.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'hehao@szzbmy.com'
+EMAIL_HOST_PASSWORD = 'hehao123'
+DEFAULT_FROM_EMAIL = 'hehao@szzbmy.com'
+#  ---------------------------------------------------------

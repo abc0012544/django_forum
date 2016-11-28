@@ -13,7 +13,7 @@ def index(request):
 #     return render(request, "index.html")
 
 def fb(request):
-    return HttpResponse("Fb")
+    return render(request, "1.html")
 
 def home(request):
     return HttpResponse("home")
