@@ -23,4 +23,99 @@
         </tbody>
      </div>
 </div>
+
+<br>
+<br>
+<br>
+<div class="row">
+    <div class="col-xs-12 col-md-12" >
+    <table class="table table-bordered">
+        <tbody>
+        {% for comment in comment_objs %}
+            <tr>
+               <div class="col-xs-12 col-md-2"> <td><strong>作者:</strong>{{ comment.owner }}</td></div>
+               <div class="col-xs-12 col-md-10"><td>{{ comment.content|linebreaksbr }}</td></div>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+    </div>
+</div>
+
+
+<nav>
+<ul class="pagination">
+    {% if fenye_data.laquo == 1 %}
+        <li><a href="?page_no=1">首页</a></li>
+        <li><a href="?page_no={{ fenye_data.previous_link }}">&laquo;</a></li>
+    {% endif %}
+
+    {% for i in fenye_data.page_links %}
+        {% if i == fenye_data.page_no %}
+        <li class="active"><a href="?page_no={{ i }}">{{ i }}</a></li>
+        {% else %}
+         <li><a href="?page_no={{ i }}">{{ i }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    {% if fenye_data.raquo == 1 %}
+        <li><a href="?page_no={{ fenye_data.next_link }}">&raquo;</a></li>
+        <li><a href="?page_no={{fenye_data.page_num}}">尾页</a></li>
+    {% endif %}
+
+</ul>
+</nav>
+  <br>
+  <br>
+<div class="row">
+<div class="col-xs-12 col-md-12">
+<form  class="form-horizontal"  role="form">
+
+  <div class="form-group">
+    <div class="col-xs-12 col-md-1"><label for="content">评论内容</label></div>
+    <div class="col-xs-12 col-md-11">
+      <textarea class="form-control" rows="3" name="content"  placeholder="请输入内容"></textarea>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-xs-12 col-md-offset-5" >
+      <button type="submit" name="btn_comment" class="btn btn-primary btn-lg" >发表评论</button>
+    </div>
+   </div>
+</form>
+
+{% if form.content.errors %}
+    {% for error in form.content.errors %}
+    <div class="alert alert-danger">内容:{{ error }}</div>
+    {% endfor %}
+{% endif %}
+
+<script type="text/javascript" scr="/static/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" scr="/static/js/jquery-csrf.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function () {
+    var article_id={{ a.id }};
+    var page_num={{ fenye_data.page_num }};
+
+    $("#btn_comment").click(function () {
+        var content=$("#content").val();
+        var parm={"article_id":article_id,"content":content};
+
+        $.post("/comment/create/",parm,function (data) {
+            var ret=JSON.parse(data);
+            if(ret["status"]=="ok"){
+                $("#btn_comment").val("");
+                window.location.href="/article/{{ b.id }}/{{ article.id }}/detail?page_no="
+            }
+            else {
+                alert(ret["msg"]);
+            }
+        });
+    })
+});
+</script>
+
 {% endblock %}

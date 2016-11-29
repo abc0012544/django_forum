@@ -29,7 +29,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for article in articles %}
+        {% for article in article_objs %}
             <tr>
                 <td><a href="/article/{{ b.id }}/{{ article.id }}/detail">{{ article.title }}</a></td>
                 <td>{{ article.content }}</td>
@@ -46,22 +46,22 @@
 <nav>
 
 <ul class="pagination">
-    {% if laquo == 1 %}
+    {% if fenye_data.laquo == 1 %}
         <li><a href="?page_no=1">首页</a></li>
-        <li><a href="?page_no={{ previous_link }}">&laquo;</a></li>
+        <li><a href="?page_no={{ fenye_data.previous_link }}">&laquo;</a></li>
     {% endif %}
 
-    {% for i in page_links %}
-        {% if i == page_no %}
+    {% for i in fenye_data.page_links %}
+        {% if i == fenye_data.page_no %}
         <li class="active"><a href="?page_no={{ i }}">{{ i }}</a></li>
         {% else %}
          <li><a href="?page_no={{ i }}">{{ i }}</a></li>
         {% endif %}
     {% endfor %}
 
-    {% if raquo == 1 %}
-        <li><a href="?page_no={{ next_link }}">&raquo;</a></li>
-        <li><a href="?page_no={{p.num_pages}}">尾页</a></li>
+    {% if fenye_data.raquo == 1 %}
+        <li><a href="?page_no={{ fenye_data.next_link }}">&raquo;</a></li>
+        <li><a href="?page_no={{fenye_data.page_num}}">尾页</a></li>
     {% endif %}
 
 
