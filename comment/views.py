@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
+from django.http import JsonResponse
 import json
 from block.models import Block
 from .models import Article
@@ -12,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 # **parm
 def comment_create(request,parm):
+    print("parm",parm)
     ok={"status":"ok","msg":"发布成功"}
     err = {"status": "err", "msg": "发布失败"}
     # article_id =64
@@ -22,7 +24,6 @@ def comment_create(request,parm):
     name = request.user
     form = CommentForm(request.POST)
     if form.is_valid():
-
         article = Article.objects.get(id=article_id)
         comment= Comment(article=article, owner=name, content=content, status=0)
         comment.save()

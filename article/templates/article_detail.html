@@ -73,48 +73,53 @@
 <form  class="form-horizontal"  role="form">
 
   <div class="form-group">
-    <div class="col-xs-12 col-md-1"><label for="content">评论内容</label></div>
+    <div class="col-xs-12 col-md-1"><label >评论内容</label></div>
     <div class="col-xs-12 col-md-11">
-      <textarea class="form-control" rows="3" name="content"  placeholder="请输入内容"></textarea>
+      <textarea class="form-control" rows="3" id="id_content"   name="content"  placeholder="请输入内容"></textarea>
     </div>
   </div>
 
   <div class="form-group">
     <div class="col-xs-12 col-md-offset-5" >
-      <button type="submit" name="btn_comment" class="btn btn-primary btn-lg" >发表评论</button>
+      <button type="submit" id="btn_comment"  class="btn btn-primary btn-lg" >发表评论</button>
     </div>
    </div>
 </form>
 
-{% if form.content.errors %}
-    {% for error in form.content.errors %}
-    <div class="alert alert-danger">内容:{{ error }}</div>
-    {% endfor %}
-{% endif %}
+{#{% if form.content.errors %}#}
+{#    {% for error in form.content.errors %}#}
+{#    <div class="alert alert-danger">内容:{{ error }}</div>#}
+{#    {% endfor %}#}
+{#{% endif %}#}
 
-<script type="text/javascript" scr="/static/js/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" scr="/static/js/jquery-csrf.js"></script>
+<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery-csrf.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function () {
     var article_id={{ a.id }};
     var page_num={{ fenye_data.page_num }};
+    var content=$("#id_content").val();
 
     $("#btn_comment").click(function () {
-        var content=$("#content").val();
+        var content=$("#id_content").val();
         var parm={"article_id":article_id,"content":content};
-
-        $.post("/comment/create/",parm,function (data) {
+        alert(parm["content"]);
+        alert(article_id);
+        
+        $.post("/comment/create/",parm, function(data) {
+            alert(3);
             var ret=JSON.parse(data);
             if(ret["status"]=="ok"){
                 $("#btn_comment").val("");
-                window.location.href="/article/{{ b.id }}/{{ article.id }}/detail?page_no="
+                alert(ok);
+                window.location.href="/article/{{ b.id }}/{{ a.id }}/detail?page_no=";
             }
             else {
                 alert(ret["msg"]);
             }
         });
-    })
+    });
 });
 </script>
 
