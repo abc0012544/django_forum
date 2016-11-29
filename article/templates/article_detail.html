@@ -103,23 +103,21 @@ $(document).ready(function () {
 
     $("#btn_comment").click(function () {
         var content=$("#id_content").val();
+{#        var name=request.user;#}
         var parm={"article_id":article_id,"content":content};
-        alert(parm["content"]);
-        alert(article_id);
-        
+
+
         $.post("/comment/create/",parm, function(data) {
-            alert(3);
             var ret=JSON.parse(data);
-            if(ret["status"]=="ok"){
+            if(ret["status"] == "ok"){
                 $("#btn_comment").val("");
-                alert(ok);
-                window.location.href="/article/{{ b.id }}/{{ a.id }}/detail?page_no=";
+                window.location.href="/article/{{ b.id }}/{{ a.id }}/detail?page_no=1";
             }
             else {
                 alert(ret["msg"]);
             }
         });
-    });
+    })
 });
 </script>
 

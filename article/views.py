@@ -23,6 +23,8 @@ def fenye(request,article_all,cnt_1page):
         page_no = p.num_pages
     if page_no < 1:
         page_no = 1
+
+
     page = p.page(page_no)
     for i in range(page_no - 3, page_no + 4):
         if i > 0 and i <= p.num_pages:

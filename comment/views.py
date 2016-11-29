@@ -4,6 +4,7 @@ from django.http import JsonResponse
 import json
 from block.models import Block
 from .models import Article
+import json
 from  .forms import CommentForm
 from comment.models import Comment
 from django.views.generic import View
@@ -11,8 +12,11 @@ from django.views.generic import DetailView
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-# **parm
-def comment_create(request,parm):
+from article.views import *
+def comment_create(request):
+    parm={}
+    parm["content"]=request.POST.get("content")
+    parm["article_id"] = request.POST.get("article_id")
     print("parm",parm)
     ok={"status":"ok","msg":"发布成功"}
     err = {"status": "err", "msg": "发布失败"}
@@ -30,3 +34,5 @@ def comment_create(request,parm):
         return HttpResponse(json.dumps(ok))
     else:
         return HttpResponse(json.dumps(err))
+
+
