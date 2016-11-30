@@ -8,6 +8,7 @@ from django.views.generic import DetailView
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 blockid2=[]
 
@@ -18,7 +19,7 @@ def fenye(request,article_all,cnt_1page):
     ARTICLE_CNT_1PAGE =cnt_1page
     p = Paginator(article_all, ARTICLE_CNT_1PAGE)
     page_num=p.num_pages
-    page_no = int(request.GET.get("page_no", "1"))
+    page_no = int(request.GET.get("page_no", 1))
     if page_no > p.num_pages:
         page_no = p.num_pages
     if page_no < 1:
@@ -158,9 +159,10 @@ def detail(request,block_id,article_id):
     block = Block.objects.get(id=block_id)
     #name=article.owner
     comment_all=Comment.objects.filter(article=article,status=0).order_by("-id")
+    comment_tocomment=Comment.objects.filter(Q(article=article) & Q(status=0) & ~Q(to_comment=0)).order_by("-id")
     comment_objs, fenye_data = fenye(request, comment_all, 3)
     #article_objs=Article.objects.filter(block=block,status=0).order_by("-id")
-    return render(request, "article_detail.html",{"b":block,"a":article,"name":name,"fenye_data":fenye_data,"comment_objs":comment_objs})
+    return render(request, "article_detail.html",{"b":block,"a":article,"name":name,"fenye_data":fenye_data,"comment_objs":comment_objs,"comment_tocomment":comment_tocomment})
 
 class Article_detail(DetailView):
     model = Article

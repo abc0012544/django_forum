@@ -34,9 +34,21 @@
         {% for comment in comment_objs %}
             <tr>
                <div class="col-xs-12 col-md-2"> <td><strong>作者:</strong>{{ comment.owner }}</td></div>
-               <div class="col-xs-12 col-md-10"><td>{{ comment.content|linebreaksbr }}</td></div>
+               <div class="col-xs-12 col-md-10"><td>
+                {% if comment.to_comment %}
+                    <blockquote>
+                        <b>{{ comment.to_comment.owner }}:</b>
+                        <br/>
+                            {{ comment.to_comment.content|linebreaksbr }}
+                    </blockquote>
+            {% endif %}
+                {{ comment.content|linebreaksbr }}
+            <a href="#to_comment" data-id="{{ comment.id }}"
+               class="to_comment btn btn-primary pull-right">回复</a>
+               </td></div>
             </tr>
         {% endfor %}
+
         </tbody>
 
     </table>
@@ -68,23 +80,25 @@
 </nav>
   <br>
   <br>
+
+{#以后你想用js实现前端逻辑，就不可以使用form组件#}
+{#否则无效#}
+
 <div class="row">
 <div class="col-xs-12 col-md-12">
-<form  class="form-horizontal"  role="form">
 
-  <div class="form-group">
     <div class="col-xs-12 col-md-1"><label >评论内容</label></div>
     <div class="col-xs-12 col-md-11">
-      <textarea class="form-control" rows="3" id="id_content"   name="content"  placeholder="请输入内容"></textarea>
+      <textarea class="form-control" rows="3" id="id_content"   name="content"  placeholder="请输入内容"></textarea><br>
     </div>
   </div>
 
-  <div class="form-group">
     <div class="col-xs-12 col-md-offset-5" >
-      <button type="submit" id="btn_comment"  class="btn btn-primary btn-lg" >发表评论</button>
+      <button type="submit" id="btn_comment"  class="btn btn-primary btn-rg" >发表评论</button>
     </div>
    </div>
-</form>
+ </div>
+</div>
 
 {#{% if form.content.errors %}#}
 {#    {% for error in form.content.errors %}#}
@@ -100,11 +114,21 @@ $(document).ready(function () {
     var article_id={{ a.id }};
     var page_num={{ fenye_data.page_num }};
     var content=$("#id_content").val();
+    var to_comment_id=0;
+
+    $(".to_comment").click(function (e) {
+        to_comment_id=parseInt($(e.target).attr("data-id"));
+        $("#id_content").focus();
+
+        return false;
+    });
+
+
 
     $("#btn_comment").click(function () {
         var content=$("#id_content").val();
-{#        var name=request.user;#}
-        var parm={"article_id":article_id,"content":content};
+
+        var parm={"article_id":article_id,"content":content,"to_comment_id":to_comment_id};
 
 
         $.post("/comment/create/",parm, function(data) {
@@ -112,12 +136,15 @@ $(document).ready(function () {
             if(ret["status"] == "ok"){
                 $("#btn_comment").val("");
                 window.location.href="/article/{{ b.id }}/{{ a.id }}/detail?page_no=1";
-            }
+                    }
             else {
                 alert(ret["msg"]);
             }
         });
-    })
+
+    });
+
+
 });
 </script>
 
