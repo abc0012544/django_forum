@@ -41,8 +41,8 @@ def register(request):
             # print('request.get_host()',request.get_host())
             text="http://%s/register/active/%s" %(request.get_host() ,pk)
             #text = "http://127.0.0.1/register/active/%s" % pk
-            # print("text",text)
-            sendemail(text,email)
+            print("text",text)
+            #sendemail(text,email)
             return  HttpResponse(text)
         else:
             return render(request, "register.html", {"form": form})

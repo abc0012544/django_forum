@@ -18,7 +18,7 @@
     <div class="col-xs-12 col-md-12" >
     <table class="table table-bordered">
         <tbody>
-         <div class="col-xs-12 col-md-2"><td><center><strong>作者</strong></center><br>{{ name }}</br></td></div>
+         <div class="col-xs-12 col-md-2"><td><center><strong>作者</strong></center><br>{{ a.owner }}</br></td></div>
         <div class="col-xs-12 col-md-10"><td><center><h5><strong>{{ a.title }}</strong></h5></center><br>{{ a.content }}</td></div>
         </tbody>
      </div>
@@ -115,6 +115,8 @@ $(document).ready(function () {
     var page_num={{ fenye_data.page_num }};
     var content=$("#id_content").val();
     var to_comment_id=0;
+    var b_id={{ b.id }};
+    var page_no={{ fenye_data.page_no }};
 
     $(".to_comment").click(function (e) {
         to_comment_id=parseInt($(e.target).attr("data-id"));
@@ -128,7 +130,8 @@ $(document).ready(function () {
     $("#btn_comment").click(function () {
         var content=$("#id_content").val();
 
-        var parm={"article_id":article_id,"content":content,"to_comment_id":to_comment_id};
+        var parm={"article_id":article_id,"content":content,"to_comment_id":to_comment_id,
+                   "b_id":b_id,"page_no":page_no };
 
 
         $.post("/comment/create/",parm, function(data) {

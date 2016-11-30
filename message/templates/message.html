@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>注册</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css"/>
+</head>
+<body>
+<ul class="list-group">
+    {% for i in message %}
+        <li class="list-group-item">
+        <a  href="/message/read/" class="toread" data-id="{{ i.id }}">{{ i.content }}</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery-csrf.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function () {
+
+    $(".toread").click(function (e) {
+        toread_id=parseInt($(e.target).attr("data-id"));
+        parm={"toread_id":toread_id}
+        $.post("/message/read/",parm, function(data) {
+            var ret=JSON.parse(data);
+                window.location.href=ret["link"];
+
+         });
+    });
+
+ });
+
+
+</script>
+</body>
+</html>
