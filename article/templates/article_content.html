@@ -29,14 +29,18 @@
   <div class="form-group">
     <div class="col-xs-12 col-md-1"><label for="content">内容</label></div>
     <div class="col-xs-12 col-md-11">
-      <textarea class="form-control" rows="8" name="content"  placeholder="请输入内容">{{ form.content.value }}</textarea>
-    </div>
-  </div>
+{#      <textarea class="form-control" rows="8" name="content"  placeholder="请输入内容">{{ form.content.value }}</textarea>#}
+{#    </div>#}
+{#  </div>#}
+        <script id="container" name="content" type="text/plian">
+        </script>
+        <input type="hidden" name="content" id="contentInput" />
   <br>
   <br>
   <div class="form-group">
     <div class="col-xs-12 col-md-offset-5" >
-      <button type="submit" class="btn btn-primary btn-lg" >发表</button>
+      <button type="submit" class="btn btn-primary btn-lg"
+       onclick="setContent()">发表</button>
     </div>
 </form>
  </div>
@@ -48,4 +52,14 @@
 {% endif %}
 {% endfor %}
 </div>
+<script type="text/javascript" src="/static/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="/static/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">
+    var ue=UE.getEditor('container');
+    function setContent() {
+        document.getElementById("contentInput").value=ue.getContent();
+
+    }
+
+</script>
 {% endblock %}

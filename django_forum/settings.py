@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'user',
     'comment',
     'message',
+    'userprofile',
 ]
 
 MIDDLEWARE = [
@@ -130,7 +131,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS =(
     os.path.join(BASE_DIR,"static"),
+    os.path.join(BASE_DIR,"DjangoUeditor/static"),
+
 )
+
+
 APPEND_SLASH=False
 
 LOGIN_REDIRECT_URL="/"
@@ -147,3 +152,5 @@ EMAIL_HOST_USER = 'hehao@szzbmy.com'
 EMAIL_HOST_PASSWORD = 'hehao123'
 DEFAULT_FROM_EMAIL = 'hehao@szzbmy.com'
 #  ---------------------------------------------------------
+MEDIA_ROOT ="D:/project/DJ/django_forum/article/pic/"
+MEDIA_URL="http://dj.com:8000/article/pic/"

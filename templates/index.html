@@ -9,27 +9,45 @@
         <p>匿名用户请<a href="/accounts/login/">登录</a></p>
     {% endif %}
     <a href="/message/info/"> <span class="badge">{{ msg_num }}</span></a>
+    {% if user.is_authenticated %}
+    <form method="post" action="/logo/" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>上传头像</label>
+    <input name='logo' type="file">
+    <br/>
+    <input type="submit" class="btn btn-primary" value=" 提交">
+    {% endif %}
+    </form>
+    <p>{{ msg }}</p>
+    <p>{{ err }}</p>
+
     <div class="col-xs-12 col-md-10">
         <!--变量一定不要叫block，跟模板关键字重名了-->
-        {% for b in blocks %}
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <a href="/article/list/{{ b.id }}" style="font-size: 18px" class="text-primary">{{ b.name }}</a>
-                    <span class="pull-right">{{ b.manager_name }}<span>
-                </div>
-                <div class="panel-body">
-                    {{ b.desc }}
-                </div>
-            </div>
-        {% endfor %}
+     {% for b in blocks %}
+         <div class="panel panel-default">
+             <div class="panel-heading">
+                 <a href="/article/list/{{ b.id }}" style="font-size: 18px" class="text-primary">{{ b.name }}</a>
+                 <span class="pull-right">{{ b.manager_name }}<span>
+             </div>
+             <div class="panel-body">
+                 {{ b.desc }}
+             </div>
+         </div>
+     {% endfor %}
         <a href="/register/" class="btn btn-primary">注册</a></p>
     </div>
 
     <div class="col-xs-12 col-md-2">
+     {% if user.userprofile.logo %}
+         <img src="{{   user.userprofile.logo }}"
+         style="width: 80%;height: 150px;"
+          alt="头像"/>
+    {% endif %}
         <div class="well">个人中心</div>
 
     </div>
 
-    </div>
+ </div>
+
 
 {% endblock %}

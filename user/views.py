@@ -9,6 +9,7 @@ from django.shortcuts import render
 
 from  user.forms import AricleForm
 from .models import Active
+from userprofile.models import UserProfile
 
 
 def auth():
@@ -34,7 +35,8 @@ def register(request):
             user=User.objects.create_user(u,email,pw)
             user.is_active=False
             user.save()
-            print("pk=%s user=%s" %(pw,u))
+            userprofile=UserProfile(user=user)
+            userprofile.save()
             # user=User.objects.get(username=user)
             active=Active(user=user,auth=pk)
             active.save()

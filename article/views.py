@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
+from userprofile.models import UserProfile
 
 blockid2=[]
 
@@ -155,6 +156,10 @@ def detail(request,block_id,article_id):
     article_id=int(article_id)
     block_id = int(block_id)
     name=request.user
+    user = User.objects.filter(username=name)
+    if user:
+        u= UserProfile.objects.filter(user=user)
+
     article=Article.objects.get(id=article_id)
     block = Block.objects.get(id=block_id)
     #name=article.owner
@@ -162,7 +167,8 @@ def detail(request,block_id,article_id):
     comment_tocomment=Comment.objects.filter(Q(article=article) & Q(status=0) & ~Q(to_comment=0)).order_by("-id")
     comment_objs, fenye_data = fenye(request, comment_all, 3)
     #article_objs=Article.objects.filter(block=block,status=0).order_by("-id")
-    return render(request, "article_detail.html",{"b":block,"a":article,"name":name,"fenye_data":fenye_data,"comment_objs":comment_objs,"comment_tocomment":comment_tocomment})
+    return render(request, "article_detail.html",{"b":block,"a":article,"name":name,"fenye_data":fenye_data,
+                                                  "comment_objs":comment_objs,"comment_tocomment":comment_tocomment,"u":u})
 
 class Article_detail(DetailView):
     model = Article
